@@ -5,12 +5,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Building2, ShieldCheck, Lock, Mail } from 'lucide-react';
+import { Building2, ShieldCheck, Lock, Mail, Eye, EyeOff } from 'lucide-react';
 
 export default function Login() {
     const [email, setEmail] = useState('admin@crm.com');
     const [password, setPassword] = useState('password');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -71,18 +72,34 @@ export default function Login() {
                             </div>
 
                             <div className="space-y-3">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Access Token</Label>
+                                <div className="flex items-center justify-between">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Access Token</Label>
+                                    <button
+                                        type="button"
+                                        onClick={() => alert('Please contact your administrator to reset your password.')}
+                                        className="text-[10px] font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider"
+                                    >
+                                        Forgot Password?
+                                    </button>
+                                </div>
                                 <div className="relative group">
                                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-primary transition-colors" />
                                     <Input
                                         id="password"
-                                        type="password"
+                                        type={showPassword ? 'text' : 'password'}
                                         placeholder="••••••••"
                                         required
                                         value={password}
                                         onChange={e => setPassword(e.target.value)}
-                                        className="h-14 pl-12 bg-slate-50 border-none rounded-2xl dark:bg-slate-800/50 font-bold focus-visible:ring-primary/20 transition-all"
+                                        className="h-14 pl-12 pr-12 bg-slate-50 border-none rounded-2xl dark:bg-slate-800/50 font-bold focus-visible:ring-primary/20 transition-all"
                                     />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 transition-colors"
+                                    >
+                                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                    </button>
                                 </div>
                             </div>
 
