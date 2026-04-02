@@ -5,7 +5,9 @@ import { prisma } from '../prismaClient';
 
 export const login = async (req: Request, res: Response) => {
     try {
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+
+        if (email) email = email.trim().toLowerCase();
 
         // Let's implement a hardcoded seeder/admin if not exists for quick testing
         let user = await prisma.user.findUnique({ where: { email } });
@@ -47,7 +49,11 @@ export const login = async (req: Request, res: Response) => {
 
 export const resetPassword = async (req: Request, res: Response) => {
     try {
-        const { email, newPassword } = req.body;
+        let { email, newPassword } = req.body;
+
+        if (email) email = email.trim().toLowerCase();
+
+        console.log(`Password reset attempt for: ${email}`);
 
         if (!email || !newPassword) {
             return res.status(400).json({ message: 'Email and new password are required' });
@@ -68,8 +74,10 @@ export const resetPassword = async (req: Request, res: Response) => {
             data: { password: hashedPassword },
         });
 
+        console.log(`Password successfully updated for: ${email}`);
         res.json({ message: 'Password updated successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+    } catch (error: any) {
+        console.error('Password reset error:', error);
+        res.status(500).json({ message: 'Server error: ' + error.message });
     }
 };
