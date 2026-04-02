@@ -57,8 +57,10 @@ export default function Login() {
             setNewPassword('');
             setConfirmPassword('');
         } catch (error: any) {
-            const msg = error?.response?.data?.message || 'Failed to reset password.';
-            alert(msg);
+            console.error('Full Reset Error:', error);
+            const status = error?.response?.status;
+            const msg = error?.response?.data?.message || error?.message || 'Failed to reset password.';
+            alert(`[Error ${status || 'Network'}] ${msg}`);
         } finally {
             setResetLoading(false);
         }
