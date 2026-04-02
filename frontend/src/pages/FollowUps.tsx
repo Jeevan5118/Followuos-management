@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
-import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Send, Clock, CheckCircle2, Phone, XCircle, ChevronRight, Inbox, Trash2, ArrowLeft, MessageSquarePlus } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Send, Clock, CheckCircle2, Phone, XCircle, Inbox, Trash2, ArrowLeft, MessageSquarePlus } from 'lucide-react';
+import { motion } from 'framer-motion';
 import api from '@/lib/api';
 import { cn } from '@/lib/utils';
 
