@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  password  String
+  name      String?
+  role      String     @default("USER")
+  followUps FollowUp[]
+}
+
+model College {
+  id           String          @id @default(uuid())
+  name         String
+  category     String
+  createdAt    DateTime        @default(now())
+  members      CollegeMember[]
+  coordinators Coordinator[]
+  followUps    FollowUp[]
+  reminders    Reminder[]
+}
+
+model Member {
+  id       String          @id @default(uuid())
+  name     String
+  email    String?
+  colleges CollegeMember[]
+}
+
+model CollegeMember {
+  collegeId String
+  memberId  String
+  college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  member    Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@id([collegeId, memberId])
+}
+
+model Coordinator {
+  id          String  @id @default(uuid())
+  name        String
+  phoneNumber String
+  collegeId   String
+  college     College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+}
+
+model FollowUp {
+  id               String    @id @default(uuid())
+  status           String    @default("No Status Change")
+  description      String
+  contactName      String?
+  nextFollowupDate DateTime?
+  createdAt        DateTime  @default(now())
+  createdById      String
+  createdBy        User      @relation(fields: [createdById], references: [id])
+  collegeId        String
+  college          College   @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+}
+
+model Reminder {
+  id               String    @id @default(uuid())
+  title            String
+  description      String?
+  dueDate          DateTime
+  createdAt        DateTime  @default(now())
+  collegeId        String
+  college          College   @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+}

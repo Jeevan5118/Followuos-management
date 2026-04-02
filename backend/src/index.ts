@@ -1,0 +1,27 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import authRoutes from './routes/authRoute';
+import collegeRoutes from './routes/collegeRoute';
+import followUpRoutes from './routes/followupRoute';
+import memberRoutes from './routes/memberRoute';
+import reminderRoutes from './routes/reminderRoute';
+
+dotenv.config();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/auth', authRoutes);
+app.use('/api/colleges', collegeRoutes);
+app.use('/api/followups', followUpRoutes);
+app.use('/api/members', memberRoutes);
+app.use('/api/reminders', reminderRoutes);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
