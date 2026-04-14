@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../prismaClient';
 
-const prisma = new PrismaClient();
 
 export const createDrive = async (req: Request, res: Response): Promise<void> => {
     try {
