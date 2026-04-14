@@ -24,6 +24,7 @@ model College {
   coordinators Coordinator[]
   followUps    FollowUp[]
   reminders    Reminder[]
+  collegeDrives CollegeDrive[]
 }
 
 model Member {
@@ -71,4 +72,13 @@ model Reminder {
   createdAt        DateTime  @default(now())
   collegeId        String
   college          College   @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+}
+
+model CollegeDrive {
+  id          String   @id @default(uuid())
+  date        DateTime
+  description String?
+  createdAt   DateTime @default(now())
+  collegeId   String
+  college     College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
 }
