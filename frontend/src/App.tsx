@@ -5,12 +5,14 @@ import AddCollege from './pages/AddCollege';
 import AddPerson from './pages/AddPerson';
 import FollowUps from './pages/FollowUps';
 import Reminders from './pages/Reminders';
+import { ColdStartIndicator } from './components/ui/ColdStartIndicator';
 
 function App() {
   const isAuthenticated = !!localStorage.getItem('token');
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans antialiased">
+      <ColdStartIndicator />
       <Routes>
         <Route path="/login" element={<Login />} />
 
