@@ -318,7 +318,7 @@ function DriveCard({ drive, onDelete, index, isUpcoming }: {
                             {coordinators.map(coord => (
                                 <div key={coord.id} className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg px-2.5 py-1.5 border border-slate-100 dark:border-slate-700">
                                     <User className="h-3 w-3 text-slate-400" />
-                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{coord.name}</span>
+                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{coord.name.split('(')[0].trim()}</span>
                                     {coord.phoneNumber && (
                                         <>
                                             <span className="text-slate-300 dark:text-slate-600">·</span>
