@@ -10,9 +10,9 @@
         "prisma:generate": "prisma generate"
     },
     "dependencies": {
-        "@prisma/adapter-pg": "^7.6.0",
-        "@prisma/client": "^7.6.0",
-        "@prisma/config": "^7.6.0",
+        "@prisma/adapter-pg": "7.7.0",
+        "@prisma/client": "7.7.0",
+        "@prisma/config": "7.7.0",
         "bcryptjs": "^3.0.3",
         "cors": "^2.8.6",
         "dotenv": "^17.4.0",
@@ -28,7 +28,7 @@
         "@types/jsonwebtoken": "^9.0.10",
         "@types/node": "^24.12.0",
         "@types/pg": "^8.20.0",
-        "prisma": "^7.6.0",
+        "prisma": "7.7.0",
         "typescript": "^6.0.2"
     }
 }
