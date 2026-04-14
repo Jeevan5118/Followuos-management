@@ -13,6 +13,7 @@ export default function Dashboard() {
     const [colleges, setColleges] = useState<any[]>([]);
     const [followups, setFollowups] = useState<any[]>([]);
     const [reminders, setReminders] = useState<any[]>([]);
+    const [drives, setDrives] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -21,10 +22,12 @@ export default function Dashboard() {
                 const colReq = await api.get('/colleges').catch(() => ({ data: [] }));
                 const folReq = await api.get('/followups').catch(() => ({ data: [] }));
                 const remReq = await api.get('/reminders').catch(() => ({ data: [] }));
+                const drvReq = await api.get('/drives').catch(() => ({ data: [] }));
 
                 setColleges(colReq.data || []);
                 setFollowups(folReq.data || []);
                 setReminders(remReq.data || []);
+                setDrives(drvReq.data || []);
             } catch (error) {
                 console.error("Dashboard Fetch Error Detailed:", error);
             } finally {
@@ -63,6 +66,9 @@ export default function Dashboard() {
     const activeReminders = reminders
         .filter(r => r.dueDate && new Date(r.dueDate).getTime() > new Date().getTime())
         .slice(0, 4);
+    const upcomingDrives = drives
+        .filter(d => new Date(d.date).getTime() > new Date().getTime())
+        .slice(0, 3);
 
     return (
         <Layout>
@@ -137,6 +143,51 @@ export default function Dashboard() {
                         </motion.div>
                     ))}
                 </motion.div>
+
+                {/* Upcoming College Drives */}
+                {upcomingDrives.length > 0 && (
+                    <div>
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                                Upcoming College Drives
+                            </h3>
+                            <Button variant="ghost" size="sm" className="text-xs font-bold uppercase tracking-tighter" onClick={() => navigate('/college-drive')}>View All</Button>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {upcomingDrives.map((drive) => {
+                                const dt = new Date(drive.date);
+                                const coordinator = drive.college?.coordinators?.[0];
+                                return (
+                                    <div
+                                        key={drive.id}
+                                        onClick={() => navigate('/college-drive')}
+                                        className="group cursor-pointer bg-gradient-to-br from-primary/5 to-indigo-500/5 border border-primary/20 hover:border-primary/50 rounded-2xl p-4 transition-all hover:shadow-md"
+                                    >
+                                        <div className="flex items-start gap-3">
+                                            <div className="h-10 w-10 shrink-0 bg-primary/10 rounded-xl flex items-center justify-center font-black text-primary text-lg">
+                                                {drive.college?.name?.[0]?.toUpperCase()}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="font-black text-slate-900 dark:text-white truncate">{drive.college?.name}</p>
+                                                <div className="flex items-center gap-1.5 text-xs text-primary font-bold mt-1">
+                                                    <Calendar className="h-3 w-3" />
+                                                    {dt.toLocaleDateString([], { month: 'short', day: 'numeric' })} • {dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                </div>
+                                                {coordinator && (
+                                                    <p className="text-[10px] text-slate-500 mt-1 truncate">📞 {coordinator.name} · {coordinator.phoneNumber}</p>
+                                                )}
+                                                {drive.description && (
+                                                    <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-snug">{drive.description}</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
 
                 {/* Main Content Sections */}
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 pb-6">

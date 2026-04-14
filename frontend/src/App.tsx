@@ -5,6 +5,7 @@ import AddCollege from './pages/AddCollege';
 import AddPerson from './pages/AddPerson';
 import FollowUps from './pages/FollowUps';
 import Reminders from './pages/Reminders';
+import CollegeDrive from './pages/CollegeDrive';
 import { ColdStartIndicator } from './components/ui/ColdStartIndicator';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/add-person" element={isAuthenticated ? <AddPerson /> : <Navigate to="/login" />} />
         <Route path="/follow-ups" element={isAuthenticated ? <FollowUps /> : <Navigate to="/login" />} />
         <Route path="/reminders" element={isAuthenticated ? <Reminders /> : <Navigate to="/login" />} />
+        <Route path="/college-drive" element={isAuthenticated ? <CollegeDrive /> : <Navigate to="/login" />} />
       </Routes>
     </div>
   );

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ListChecks, LogOut, BellRing, UserPlus, Building2 } from 'lucide-react';
+import { Home, ListChecks, LogOut, BellRing, UserPlus, Building2, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
@@ -8,6 +8,7 @@ const navItems = [
     { href: '/add-college', label: 'Add College', icon: Building2 },
     { href: '/add-person', label: 'Add Person', icon: UserPlus },
     { href: '/follow-ups', label: 'Follow-ups', icon: ListChecks },
+    { href: '/college-drive', label: 'College Drive', icon: Calendar },
     { href: '/reminders', label: 'Reminders', icon: BellRing },
 ];
 

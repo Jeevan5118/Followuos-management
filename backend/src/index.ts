@@ -6,6 +6,7 @@ import collegeRoutes from './routes/collegeRoute';
 import followUpRoutes from './routes/followupRoute';
 import memberRoutes from './routes/memberRoute';
 import reminderRoutes from './routes/reminderRoute';
+import driveRoutes from './routes/driveRoute';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use('/api/colleges', collegeRoutes);
 app.use('/api/followups', followUpRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/reminders', reminderRoutes);
+app.use('/api/drives', driveRoutes);
 
 const PORT = process.env.PORT || 5000;
 
