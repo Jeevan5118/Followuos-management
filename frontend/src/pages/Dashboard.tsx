@@ -77,7 +77,7 @@ export default function Dashboard() {
                                     <div
                                         key={drive.id}
                                         onClick={() => navigate('/college-drive')}
-                                        className="group cursor-pointer bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-800 hover:border-primary/50 rounded-2xl p-4 transition-all hover:shadow-xl hover:-translate-y-1 shadow-sm"
+                                        className="group cursor-pointer bg-blue-50/50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 hover:border-primary/50 rounded-2xl p-4 transition-all hover:shadow-xl hover:-translate-y-1 shadow-sm"
                                     >
                                         <div className="flex items-start gap-3">
                                             <div className="h-10 w-10 shrink-0 bg-primary/10 rounded-xl flex items-center justify-center font-black text-primary text-lg">
@@ -95,10 +95,15 @@ export default function Dashboard() {
                                                     {dt.toLocaleDateString([], { month: 'short', day: 'numeric' })} • {dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                 </div>
                                                 {coordinator && (
-                                                    <p className="text-[10px] text-slate-500 mt-2 font-medium flex items-center gap-1.5 truncate">
-                                                        <Users className="h-3 w-3 opacity-50" />
-                                                        {coordinator.name} · {coordinator.phoneNumber}
-                                                    </p>
+                                                    <div className="text-[10px] text-slate-600 dark:text-slate-400 mt-2 font-bold flex flex-col gap-0.5">
+                                                        <div className="flex items-center gap-1.5">
+                                                            <Users className="h-3 w-3 opacity-50 text-primary" />
+                                                            <span className="truncate">{coordinator.name.split('(')[0].trim()}</span>
+                                                        </div>
+                                                        <div className="pl-[18px] opacity-70 font-medium">
+                                                            {coordinator.phoneNumber}
+                                                        </div>
+                                                    </div>
                                                 )}
                                                 {drive.description && (
                                                     <p className="text-[10px] text-slate-400 mt-2 line-clamp-2 italic leading-relaxed">
