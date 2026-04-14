@@ -259,6 +259,19 @@ export default function FollowUps() {
                                             ))}
                                         </div>
                                     </div>
+                                    {/* Mobile Header Sub-info */}
+                                    <div className="md:hidden flex flex-wrap gap-1.5 mt-1">
+                                        {activeCollege.category && (
+                                            <span className="text-[8px] font-black tracking-widest uppercase px-1.5 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded-md">
+                                                {activeCollege.category}
+                                            </span>
+                                        )}
+                                        {activeCollege.coordinators?.length > 0 && (
+                                            <span className="text-[8px] font-bold text-slate-500 border rounded-md px-1.5 py-0.5 bg-slate-50/50">
+                                                {activeCollege.coordinators.length} Lead{activeCollege.coordinators.length > 1 ? 's' : ''}
+                                            </span>
+                                        )}
+                                    </div>
                                     <div className="flex items-center gap-1.5 ml-auto">
                                         <Button
                                             variant="outline"
@@ -346,23 +359,23 @@ export default function FollowUps() {
                             {/* Input Bar */}
                             <div className="p-4 md:p-6 border-t bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
                                 <form onSubmit={handleAddFollowUp} className="max-w-5xl mx-auto space-y-4">
-                                    <div className="flex flex-col sm:flex-row gap-2">
+                                    <div className="grid grid-cols-2 sm:flex gap-2">
                                         <select
-                                            className="h-10 px-4 rounded-full bg-slate-100 dark:bg-slate-800 border-none outline-none text-[11px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-400 cursor-pointer w-full sm:w-48 appearance-none hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                                            className="h-9 md:h-10 px-3 md:px-4 rounded-xl md:rounded-full bg-slate-100 dark:bg-slate-800 border-none outline-none text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-400 cursor-pointer appearance-none hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                                             value={contactName}
                                             onChange={(e) => setContactName(e.target.value)}
                                         >
-                                            <option value="">👤 Select Person</option>
+                                            <option value="">👤 Person</option>
                                             {globalPersons.map((m: any) => (
                                                 <option key={m.id} value={m.name}>{m.name}</option>
                                             ))}
                                         </select>
                                         <select
-                                            className="h-10 px-4 rounded-full bg-slate-100 dark:bg-slate-800 border-none outline-none text-[11px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-400 cursor-pointer w-full sm:w-48 appearance-none hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                                            className="h-9 md:h-10 px-3 md:px-4 rounded-xl md:rounded-full bg-slate-100 dark:bg-slate-800 border-none outline-none text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-400 cursor-pointer appearance-none hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                                             value={followupStatus}
                                             onChange={(e) => setFollowupStatus(e.target.value)}
                                         >
-                                            <option value="">🏷️ No Transition</option>
+                                            <option value="">🏷️ Status</option>
                                             <option value="Pending">🕒 Pending</option>
                                             <option value="Contacted">📞 Contacted</option>
                                             <option value="In Progress">🔄 In Progress</option>
@@ -373,8 +386,8 @@ export default function FollowUps() {
                                     </div>
                                     <div className="flex gap-2">
                                         <Input
-                                            placeholder="Write interaction transcript..."
-                                            className="flex-1 h-14 px-6 bg-slate-100 dark:bg-slate-800 border-none rounded-2xl md:rounded-3xl focus-visible:ring-primary/20 text-md font-medium"
+                                            placeholder="Interaction transcript..."
+                                            className="flex-1 h-12 md:h-14 px-4 md:px-6 bg-slate-100 dark:bg-slate-800 border-none rounded-xl md:rounded-3xl focus-visible:ring-primary/20 text-sm md:text-md font-medium"
                                             value={followupDesc}
                                             onChange={(e) => setFollowupDesc(e.target.value)}
                                             onKeyDown={(e) => {
@@ -387,9 +400,9 @@ export default function FollowUps() {
                                         <Button
                                             disabled={!followupDesc.trim() || sending}
                                             type="submit"
-                                            className="h-14 w-14 shrink-0 rounded-2xl md:rounded-3xl shadow-xl shadow-primary/20 transition-all active:scale-90"
+                                            className="h-12 w-12 md:h-14 md:w-14 shrink-0 rounded-xl md:rounded-3xl shadow-xl shadow-primary/20 transition-all active:scale-90"
                                         >
-                                            <Send className="h-6 w-6 ml-1" />
+                                            <Send className="h-5 w-5 md:h-6 md:w-6 ml-0.5 md:ml-1" />
                                         </Button>
                                     </div>
                                 </form>

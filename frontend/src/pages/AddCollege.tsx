@@ -155,7 +155,7 @@ export default function AddCollege() {
                                     No persons added yet. Add persons first from the "Add Person" page.
                                 </div>
                             ) : (
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap gap-1.5 md:gap-2 max-h-48 overflow-y-auto p-1 custom-scrollbar">
                                     {persons.map(person => {
                                         const isSelected = selectedMemberIds.includes(person.id);
                                         return (
@@ -164,13 +164,13 @@ export default function AddCollege() {
                                                 type="button"
                                                 onClick={() => toggleMember(person.id)}
                                                 className={cn(
-                                                    "px-4 py-2.5 rounded-full text-sm font-bold transition-all border-2",
+                                                    "px-3 py-1.5 md:px-4 md:py-2.5 rounded-full text-[11px] md:text-sm font-bold transition-all border md:border-2",
                                                     isSelected
-                                                        ? "bg-primary text-white border-primary shadow-lg shadow-primary/30 scale-105"
-                                                        : "bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:bg-primary/5"
+                                                        ? "bg-primary text-white border-primary shadow-lg shadow-primary/20"
+                                                        : "bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-primary/50"
                                                 )}
                                             >
-                                                {isSelected && <span className="mr-1.5">✓</span>}
+                                                {isSelected && <span className="mr-1">✓</span>}
                                                 {person.name}
                                             </button>
                                         );
@@ -356,23 +356,24 @@ export default function AddCollege() {
                                                 <Trash2 className="w-4 h-4" />
                                             </Button>
                                         </div>
-                                        <div>
-                                            <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1">Persons Visited</p>
+                                        <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                                            <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Persons Visited</p>
                                             <div className="flex flex-wrap gap-1">
                                                 {college.members?.length > 0 ? college.members.map((cm: any, i: number) => (
-                                                    <span key={i} className="text-[10px] font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-full px-2.5 py-0.5">
+                                                    <span key={i} className="text-[10px] font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg px-2 py-0.5">
                                                         {cm.member?.name || 'Unknown'}
                                                     </span>
-                                                )) : <span className="text-[10px] text-slate-300 italic">None</span>}
+                                                )) : <span className="text-[10px] text-slate-300 italic uppercase">None Logged</span>}
                                             </div>
                                         </div>
-                                        <div>
-                                            <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1">Coordinator</p>
+                                        <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                                            <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Coordinator Contacts</p>
                                             {college.coordinators?.length > 0 ? college.coordinators.map((coord: any, i: number) => (
-                                                <p key={i} className="text-xs font-bold text-slate-600 dark:text-slate-300">
-                                                    {coord.name} <span className="text-slate-400">({coord.phoneNumber})</span>
+                                                <p key={i} className="text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center gap-2">
+                                                    <span className="h-1.5 w-1.5 rounded-full bg-primary/40" />
+                                                    {coord.name} <span className="text-slate-400 font-medium ml-auto">{coord.phoneNumber}</span>
                                                 </p>
-                                            )) : <span className="text-[10px] text-slate-300 italic">None</span>}
+                                            )) : <span className="text-[10px] text-slate-300 italic uppercase">No Leads found</span>}
                                         </div>
                                     </div>
                                 ))}

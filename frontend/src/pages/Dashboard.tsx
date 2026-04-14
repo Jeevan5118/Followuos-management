@@ -124,13 +124,13 @@ export default function Dashboard() {
                     {stats.map((stat, i) => (
                         <motion.div key={i} variants={item}>
                             <Card className="border-none shadow-sm bg-white dark:bg-slate-900 hover:shadow-md transition-all h-full">
-                                <CardContent className="p-5 flex flex-col items-start gap-3">
-                                    <div className={cn("p-2 rounded-lg", stat.bg)}>
-                                        <stat.icon className={cn("h-5 w-5", stat.color)} />
+                                <CardContent className="p-3 md:p-5 flex flex-col items-start gap-2 md:gap-3">
+                                    <div className={cn("p-1.5 md:p-2 rounded-lg", stat.bg)}>
+                                        <stat.icon className={cn("h-4 w-4 md:h-5 md:w-5", stat.color)} />
                                     </div>
-                                    <div>
-                                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{stat.title}</p>
-                                        <div className="text-2xl font-black text-slate-900 dark:text-white mt-1 uppercase">{stat.value}</div>
+                                    <div className="min-w-0 w-full">
+                                        <p className="text-[9px] md:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">{stat.title}</p>
+                                        <div className="text-xl md:text-2xl font-black text-slate-900 dark:text-white mt-0.5 md:mt-1 uppercase truncate">{stat.value}</div>
                                     </div>
                                 </CardContent>
                             </Card>
