@@ -108,15 +108,15 @@ export default function Reminders() {
                                         <div className="relative">
                                             <select
                                                 required
-                                                className="w-full h-12 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none appearance-none cursor-pointer"
+                                                className="w-full h-14 rounded-2xl border-none ring-1 ring-slate-200 dark:ring-slate-800 bg-slate-50/50 dark:bg-slate-800/50 px-5 text-sm font-bold focus:ring-2 focus:ring-primary/40 outline-none appearance-none cursor-pointer transition-all pr-12"
                                                 value={collegeId}
                                                 onChange={e => setCollegeId(e.target.value)}
                                             >
-                                                <option value="">-- {loading ? 'Loading...' : 'Choose Target'} --</option>
+                                                <option value="">-- {loading ? 'Loading...' : 'CHOOSE TARGET'} --</option>
                                                 {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                                             </select>
-                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-50">
-                                                <ChevronRight className="h-4 w-4 rotate-90" />
+                                            <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
+                                                <Clock className="h-4 w-4" />
                                             </div>
                                         </div>
                                     )}
@@ -243,21 +243,3 @@ export default function Reminders() {
     );
 }
 
-function ChevronRight(props: any) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="m9 18 6-6-6-6" />
-        </svg>
-    )
-}

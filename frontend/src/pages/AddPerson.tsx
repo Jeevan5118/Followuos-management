@@ -134,14 +134,14 @@ export default function AddPerson() {
                                             <div className="h-12 w-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-black text-slate-400 text-lg group-hover:bg-primary group-hover:text-white transition-colors capitalize">
                                                 {person.name?.[0]}
                                             </div>
-                                            <div className="flex-1 min-w-0 pr-4">
+                                            <div className="flex-1 min-w-0 pr-8">
                                                 <h4 className="font-bold text-slate-900 dark:text-white truncate text-base">{person.name}</h4>
                                             </div>
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
                                                 onClick={() => handleDelete(person.id)}
-                                                className="absolute top-2 right-2 h-8 w-8 text-slate-300 hover:text-destructive hover:bg-destructive/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                                                className="absolute top-2 right-2 h-8 w-8 text-slate-300 hover:text-destructive hover:bg-destructive/10 rounded-full md:opacity-0 group-hover:opacity-100 transition-opacity"
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </Button>

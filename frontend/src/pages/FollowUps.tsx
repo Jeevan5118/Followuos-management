@@ -190,10 +190,10 @@ export default function FollowUps() {
                                     key={c.id}
                                     onClick={() => handleSelectCollege(c)}
                                     className={cn(
-                                        "w-full text-left p-4 rounded-2xl transition-all duration-300 flex justify-between items-center group relative overflow-hidden border",
+                                        "w-full text-left p-5 rounded-2xl transition-all duration-300 flex justify-between items-center group relative overflow-hidden border",
                                         isActive
                                             ? "bg-white dark:bg-primary/10 border-primary shadow-lg shadow-primary/10 z-10"
-                                            : "hover:bg-white dark:hover:bg-slate-800 border-transparent hover:border-slate-200 dark:hover:border-slate-700"
+                                            : "hover:bg-white dark:hover:bg-slate-800 border-transparent hover:border-slate-200 dark:hover:border-slate-700 shadow-sm"
                                     )}
                                 >
                                     <div className="flex-1 min-w-0 pr-2">

@@ -110,7 +110,7 @@ export default function AddCollege() {
                                 <Building2 className="w-5 h-5 text-primary" /> Core Information
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="p-6 md:p-8 space-y-8">
+                        <CardContent className="p-5 md:p-8 space-y-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-3">
                                     <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
@@ -128,15 +128,17 @@ export default function AddCollege() {
                                     <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
                                         <Tag className="h-3 w-3" /> Category *
                                     </Label>
-                                    <select
-                                        className="w-full h-14 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 px-6 text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none appearance-none cursor-pointer"
-                                        value={category}
-                                        onChange={(e) => setCategory(e.target.value)}
-                                    >
-                                        <option value="Workshop">Workshop</option>
-                                        <option value="HR Bootcamp">HR Bootcamp</option>
-                                        <option value="Drive">Drive</option>
-                                    </select>
+                                    <div className="relative">
+                                        <select
+                                            className="w-full h-14 rounded-2xl border-none ring-1 ring-slate-200 dark:ring-slate-800 bg-slate-50/50 dark:bg-slate-800/50 px-6 text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none appearance-none cursor-pointer"
+                                            value={category}
+                                            onChange={(e) => setCategory(e.target.value)}
+                                        >
+                                            <option value="Workshop">Workshop</option>
+                                            <option value="HR Bootcamp">HR Bootcamp</option>
+                                            <option value="Drive">Drive</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </CardContent>
