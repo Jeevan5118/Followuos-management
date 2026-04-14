@@ -65,8 +65,9 @@ export const deleteDrive = async (req: Request, res: Response): Promise<void> =>
     try {
         const { id } = req.params;
         await prisma.collegeDrive.delete({
-            where: { id }
+            where: { id: id as string }
         });
+
         res.status(200).json({ message: 'Drive deleted successfully' });
     } catch (error) {
         console.error('Error deleting college drive:', error);
