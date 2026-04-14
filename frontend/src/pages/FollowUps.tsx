@@ -159,9 +159,9 @@ export default function FollowUps() {
                 <div className={cn(
                     "w-full md:w-80 lg:w-96 border-r flex flex-col bg-slate-50/50 dark:bg-slate-900/50 transition-all duration-300 z-20",
                     !showContactList && "hidden md:flex",
-                    showContactList ? "relative h-[60vh] md:h-full" : "h-0 md:h-full"
+                    showContactList ? "relative h-full" : "h-0 md:h-full"
                 )}>
-                    <div className="p-4 md:p-6 border-b bg-white/50 dark:bg-slate-900/50">
+                    <div className="p-5 md:p-6 pt-12 md:pt-6 border-b bg-white/50 dark:bg-slate-900/50">
                         <h2 className="font-black text-xl md:text-2xl tracking-tight mb-4 text-slate-900 dark:text-white uppercase">Outreach Log</h2>
                         <div className="relative">
                             <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
@@ -219,7 +219,10 @@ export default function FollowUps() {
                 </div>
 
                 {/* Right Panel - Chat Area */}
-                <div className="flex-1 flex flex-col bg-white dark:bg-slate-950/40 relative">
+                <div className={cn(
+                    "flex-1 flex flex-col bg-white dark:bg-slate-950/40 relative",
+                    showContactList && "hidden md:flex"
+                )}>
                     {!activeCollege ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-slate-400 p-8 text-center">
                             <div className="h-24 w-24 rounded-3xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center mb-8 rotate-12">
@@ -237,12 +240,12 @@ export default function FollowUps() {
                     ) : (
                         <>
                             {/* Panel Header */}
-                            <div className="p-4 md:p-6 border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl sticky top-0 z-10">
+                            <div className="p-4 md:p-6 pt-12 md:pt-6 border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl sticky top-0 z-10">
                                 <div className="flex items-center gap-3 mb-4 md:hidden">
-                                    <Button variant="ghost" size="icon" onClick={() => setShowContactList(true)} className="rounded-full">
+                                    <Button variant="ghost" size="icon" onClick={() => setShowContactList(true)} className="rounded-full bg-slate-100 dark:bg-slate-800">
                                         <ArrowLeft className="h-6 w-6" />
                                     </Button>
-                                    <h2 className="text-lg font-bold truncate pr-10">{activeCollege.name}</h2>
+                                    <h2 className="text-xl font-bold truncate pr-4">{activeCollege.name}</h2>
                                 </div>
                                 <div className="flex justify-between items-start">
                                     <div className="hidden md:block min-w-0">
