@@ -57,7 +57,7 @@ export default function AddPerson() {
 
     return (
         <Layout>
-            <div className="max-w-6xl mx-auto space-y-10 pb-20">
+            <div className="max-w-6xl mx-auto space-y-10">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
                         <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900 dark:text-white uppercase leading-none">Global Roster</h2>

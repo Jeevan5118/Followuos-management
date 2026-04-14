@@ -91,7 +91,7 @@ export default function AddCollege() {
 
     return (
         <Layout>
-            <div className="max-w-5xl mx-auto pb-20">
+            <div className="max-w-5xl mx-auto">
                 <div className="mb-10 text-center md:text-left">
                     <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
                         <div className="h-14 w-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shadow-lg shadow-primary/5">

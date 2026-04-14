@@ -66,7 +66,7 @@ export default function Dashboard() {
 
     return (
         <Layout>
-            <div className="space-y-6 md:space-y-10 pb-10">
+            <div className="space-y-6 md:space-y-10">
                 {/* Welcome Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>

@@ -153,12 +153,13 @@ export default function FollowUps() {
 
     return (
         <Layout>
-            <div className="h-[calc(100vh-12rem)] md:h-[calc(100vh-8rem)] flex shadow-2xl border rounded-2xl md:rounded-3xl overflow-hidden bg-white/50 dark:bg-slate-900/50 backdrop-blur-3xl relative">
+            <div className="flex flex-col md:flex-row h-full md:h-[calc(100vh-10rem)] shadow-2xl border rounded-2xl md:rounded-3xl overflow-hidden bg-white/50 dark:bg-slate-900/50 backdrop-blur-3xl relative">
 
                 {/* Left Panel - College List */}
                 <div className={cn(
-                    "w-full md:w-80 lg:w-96 border-r flex flex-col bg-slate-50/50 dark:bg-slate-900/50 transition-all duration-300 absolute md:relative z-20 h-full",
-                    !showContactList && "translate-x-[-100%] md:translate-x-0 invisible md:visible"
+                    "w-full md:w-80 lg:w-96 border-r flex flex-col bg-slate-50/50 dark:bg-slate-900/50 transition-all duration-300 z-20",
+                    !showContactList && "hidden md:flex",
+                    showContactList ? "relative h-[60vh] md:h-full" : "h-0 md:h-full"
                 )}>
                     <div className="p-4 md:p-6 border-b bg-white/50 dark:bg-slate-900/50">
                         <h2 className="font-black text-xl md:text-2xl tracking-tight mb-4 text-slate-900 dark:text-white uppercase">Outreach Log</h2>
@@ -218,7 +219,7 @@ export default function FollowUps() {
                 </div>
 
                 {/* Right Panel - Chat Area */}
-                <div className="flex-1 flex flex-col bg-white dark:bg-slate-950/40 relative overflow-hidden">
+                <div className="flex-1 flex flex-col bg-white dark:bg-slate-950/40 relative">
                     {!activeCollege ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-slate-400 p-8 text-center">
                             <div className="h-24 w-24 rounded-3xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center mb-8 rotate-12">

@@ -76,7 +76,7 @@ export default function Reminders() {
 
     return (
         <Layout>
-            <div className="max-w-6xl mx-auto space-y-8 pb-20">
+            <div className="max-w-6xl mx-auto space-y-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-slate-900 dark:text-white uppercase">Calendar Alerts</h2>
