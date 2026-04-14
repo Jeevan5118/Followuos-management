@@ -1,10 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ListChecks, LogOut, BellRing, UserPlus, Building2, Calendar } from 'lucide-react';
+import { Home, ListChecks, LogOut, BellRing, UserPlus, Building2, Calendar, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
 const navItems = [
     { href: '/', label: 'Dashboard', icon: Home },
+    { href: '/analytics', label: 'Analytics', icon: TrendingUp },
     { href: '/add-college', label: 'Add College', icon: Building2 },
     { href: '/add-person', label: 'Add Person', icon: UserPlus },
     { href: '/follow-ups', label: 'Follow-ups', icon: ListChecks },

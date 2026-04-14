@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, AlertTriangle, CheckCircle2, TrendingUp, Plus, ListChecks, ArrowRight, Calendar } from 'lucide-react';
+import { ListChecks, ArrowRight, Calendar, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import api from '@/lib/api';
@@ -10,57 +10,25 @@ import { cn } from '@/lib/utils';
 
 export default function Dashboard() {
     const navigate = useNavigate();
-    const [colleges, setColleges] = useState<any[]>([]);
     const [followups, setFollowups] = useState<any[]>([]);
     const [reminders, setReminders] = useState<any[]>([]);
     const [drives, setDrives] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const colReq = await api.get('/colleges').catch(() => ({ data: [] }));
                 const folReq = await api.get('/followups').catch(() => ({ data: [] }));
                 const remReq = await api.get('/reminders').catch(() => ({ data: [] }));
                 const drvReq = await api.get('/drives').catch(() => ({ data: [] }));
 
-                setColleges(colReq.data || []);
                 setFollowups(folReq.data || []);
                 setReminders(remReq.data || []);
                 setDrives(drvReq.data || []);
             } catch (error) {
                 console.error("Dashboard Fetch Error Detailed:", error);
-            } finally {
-                setLoading(false);
             }
         };
         fetchData();
     }, []);
-
-    const pending = followups.filter(f => f.status === 'Pending' || f.status === 'In Progress').length;
-    const interested = followups.filter(f => f.status === 'Interested').length;
-
-    let convRate = 0;
-    if (colleges.length > 0) {
-        convRate = Math.round((interested / colleges.length) * 100);
-    }
-
-    const stats = [
-        { title: 'Total Colleges', value: loading ? '-' : colleges.length.toLocaleString(), icon: Users, color: 'text-blue-500', bg: 'bg-blue-50', path: '/follow-ups' },
-        { title: 'Pending Follow-ups', value: loading ? '-' : pending.toLocaleString(), icon: AlertTriangle, color: 'text-amber-500', bg: 'bg-amber-50', path: '/follow-ups' },
-        { title: 'Interested', value: loading ? '-' : interested.toLocaleString(), icon: CheckCircle2, color: 'text-green-500', bg: 'bg-green-50', path: '/follow-ups' },
-        { title: 'Conversion Rate', value: loading ? '-' : `${convRate}%`, icon: TrendingUp, color: 'text-indigo-500', bg: 'bg-indigo-50', path: '/' },
-    ];
-
-    const container = {
-        hidden: { opacity: 0 },
-        show: { opacity: 1, transition: { staggerChildren: 0.1 } }
-    };
-
-    const item = {
-        hidden: { opacity: 0, y: 20 },
-        show: { opacity: 1, y: 0, transition: { type: 'spring' as const } }
-    };
 
     const recentFollowUps = followups.slice(0, 4);
     const activeReminders = reminders
@@ -85,109 +53,131 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                {/* Quick Actions - Primary Focus for Mobile */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <button
-                        onClick={() => navigate('/add-college')}
-                        className="group flex items-center justify-between p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md hover:border-primary/50 transition-all active:scale-[0.98]"
-                    >
-                        <div className="flex items-center gap-4">
-                            <div className="h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                                <Plus className="h-6 w-6" />
-                            </div>
-                            <div className="text-left">
-                                <p className="font-bold text-slate-900 dark:text-white">New College</p>
-                                <p className="text-xs text-slate-500">Log a visit or outreach</p>
-                            </div>
-                        </div>
-                        <ArrowRight className="h-5 w-5 text-slate-300 group-hover:text-primary transition-colors" />
-                    </button>
-
-                    <button
-                        onClick={() => navigate('/follow-ups')}
-                        className="group flex items-center justify-between p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md hover:border-primary/50 transition-all active:scale-[0.98]"
-                    >
-                        <div className="flex items-center gap-4">
-                            <div className="h-12 w-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
-                                <ListChecks className="h-6 w-6" />
-                            </div>
-                            <div className="text-left">
-                                <p className="font-bold text-slate-900 dark:text-white">Update Status</p>
-                                <p className="text-xs text-slate-500">Review log & activities</p>
-                            </div>
-                        </div>
-                        <ArrowRight className="h-5 w-5 text-slate-300 group-hover:text-indigo-600 transition-colors" />
-                    </button>
-                </div>
-
-                {/* Stats Grid */}
-                <motion.div
-                    className="grid grid-cols-2 lg:grid-cols-4 gap-4"
-                    variants={container}
-                    initial="hidden"
-                    animate="show"
-                >
-                    {stats.map((stat, i) => (
-                        <motion.div key={i} variants={item}>
-                            <Card className="border-none shadow-sm bg-white dark:bg-slate-900 hover:shadow-md transition-all h-full">
-                                <CardContent className="p-3 md:p-5 flex flex-col items-start gap-2 md:gap-3">
-                                    <div className={cn("p-1.5 md:p-2 rounded-lg", stat.bg)}>
-                                        <stat.icon className={cn("h-4 w-4 md:h-5 md:w-5", stat.color)} />
-                                    </div>
-                                    <div className="min-w-0 w-full">
-                                        <p className="text-[9px] md:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">{stat.title}</p>
-                                        <div className="text-xl md:text-2xl font-black text-slate-900 dark:text-white mt-0.5 md:mt-1 uppercase truncate">{stat.value}</div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-                    ))}
-                </motion.div>
-
-                {/* Upcoming College Drives */}
+                {/* Upcoming College Drives Highlight Section - NOW AT TOP */}
                 {upcomingDrives.length > 0 && (
-                    <div>
-                        <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
-                                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                                Upcoming College Drives
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="space-y-4"
+                    >
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                                <span className="h-2.5 w-2.5 rounded-full bg-primary animate-ping" />
+                                Drive Calendar Highlights
                             </h3>
-                            <Button variant="ghost" size="sm" className="text-xs font-bold uppercase tracking-tighter" onClick={() => navigate('/college-drive')}>View All</Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-[10px] h-7 px-3 font-black uppercase tracking-tighter border-primary/20 hover:bg-primary/5 text-primary"
+                                onClick={() => navigate('/college-drive')}
+                            >
+                                Manage Schedule
+                            </Button>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {upcomingDrives.map((drive) => {
-                                const dt = new Date(drive.date);
-                                const coordinator = drive.college?.coordinators?.[0];
-                                return (
-                                    <div
-                                        key={drive.id}
-                                        onClick={() => navigate('/college-drive')}
-                                        className="group cursor-pointer bg-gradient-to-br from-primary/5 to-indigo-500/5 border border-primary/20 hover:border-primary/50 rounded-2xl p-4 transition-all hover:shadow-md"
-                                    >
-                                        <div className="flex items-start gap-3">
-                                            <div className="h-10 w-10 shrink-0 bg-primary/10 rounded-xl flex items-center justify-center font-black text-primary text-lg">
-                                                {drive.college?.name?.[0]?.toUpperCase()}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="font-black text-slate-900 dark:text-white truncate">{drive.college?.name}</p>
-                                                <div className="flex items-center gap-1.5 text-xs text-primary font-bold mt-1">
-                                                    <Calendar className="h-3 w-3" />
-                                                    {dt.toLocaleDateString([], { month: 'short', day: 'numeric' })} • {dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+
+                        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                            {/* Main Highlight (The Very Next Drive) */}
+                            <div className="xl:col-span-12">
+                                <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-slate-900 to-slate-800 text-white dark:from-slate-900 dark:to-black">
+                                    <CardContent className="p-0">
+                                        <div className="flex flex-col md:flex-row">
+                                            {/* Left side: College Initial/Logo */}
+                                            <div className="md:w-1/4 bg-primary flex flex-col items-center justify-center p-8 text-white relative overflow-hidden">
+                                                <div className="text-7xl font-black opacity-20 absolute -bottom-4 -right-4">{upcomingDrives[0].college?.name?.[0]}</div>
+                                                <div className="h-20 w-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center font-black text-4xl mb-4 relative z-10 shadow-2xl">
+                                                    {upcomingDrives[0].college?.name?.[0]}
                                                 </div>
-                                                {coordinator && (
-                                                    <p className="text-[10px] text-slate-500 mt-1 truncate">📞 {coordinator.name} · {coordinator.phoneNumber}</p>
-                                                )}
-                                                {drive.description && (
-                                                    <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-snug">{drive.description}</p>
-                                                )}
+                                                <span className="text-[10px] font-black uppercase tracking-[0.2em] relative z-10 opacity-80">Next Session</span>
+                                            </div>
+
+                                            {/* Right side: Details */}
+                                            <div className="flex-1 p-6 md:p-10 relative">
+                                                <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
+                                                    <div>
+                                                        <h4 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-2">
+                                                            {upcomingDrives[0].college?.name}
+                                                        </h4>
+                                                        <span className="px-4 py-1.5 rounded-full bg-white/10 text-xs font-black uppercase tracking-widest text-primary-foreground border border-white/10">
+                                                            {upcomingDrives[0].college?.category}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col items-end">
+                                                        <div className="text-sm font-black flex items-center gap-2 text-primary-foreground/80 mb-1">
+                                                            <Calendar className="h-4 w-4" />
+                                                            {new Date(upcomingDrives[0].date).toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })}
+                                                        </div>
+                                                        <div className="text-4xl font-black tracking-tighter">
+                                                            {new Date(upcomingDrives[0].date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+                                                    <div className="space-y-4">
+                                                        {upcomingDrives[0].description && (
+                                                            <p className="text-lg text-slate-300 leading-relaxed font-medium line-clamp-2 italic">
+                                                                "{upcomingDrives[0].description}"
+                                                            </p>
+                                                        )}
+                                                        {upcomingDrives[0].college?.coordinators?.[0] && (
+                                                            <div className="inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-5 py-3 backdrop-blur-sm">
+                                                                <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary-foreground">
+                                                                    <Users className="h-5 w-5" />
+                                                                </div>
+                                                                <div>
+                                                                    <div className="text-xs font-black uppercase tracking-widest text-slate-400">Coordinator</div>
+                                                                    <div className="font-bold flex items-center gap-2">
+                                                                        {upcomingDrives[0].college.coordinators[0].name}
+                                                                        <span className="text-primary font-black ml-2">{upcomingDrives[0].college.coordinators[0].phoneNumber}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex justify-end pt-4 md:pt-0">
+                                                        <Button
+                                                            onClick={() => navigate('/college-drive')}
+                                                            className="h-14 px-10 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground font-black text-lg uppercase tracking-widest shadow-xl shadow-primary/20 group"
+                                                        >
+                                                            Full Details
+                                                            <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                                        </Button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                    </CardContent>
+                                </Card>
+                            </div>
+
+                            {/* Secondary Items (If more than 1) */}
+                            {upcomingDrives.length > 1 && (
+                                <div className="xl:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {upcomingDrives.slice(1, 4).map((drive) => (
+                                        <div
+                                            key={drive.id}
+                                            onClick={() => navigate('/college-drive')}
+                                            className="group cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-all hover:shadow-md hover:border-primary/30"
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <div className="h-12 w-12 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center font-black text-slate-400 text-xl group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                                                    {drive.college?.name?.[0]}
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <p className="font-black text-slate-900 dark:text-white truncate">{drive.college?.name}</p>
+                                                    <p className="text-xs font-bold text-primary mt-0.5">
+                                                        {new Date(drive.date).toLocaleDateString([], { month: 'short', day: 'numeric' })} at {new Date(drive.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
-                    </div>
+                    </motion.div>
                 )}
+
 
                 {/* Main Content Sections */}
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 pb-6">
