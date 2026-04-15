@@ -22,22 +22,16 @@ export function Layout({ children }: { children: ReactNode }) {
             </div>
 
             <div className="flex-1 flex flex-col min-w-0">
-                {/* Mobile Top Header */}
-                <header className="lg:hidden h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sticky top-0 z-50">
-                    <div className="flex items-center gap-2">
-                        <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center font-black text-white text-sm">
-                            S
-                        </div>
-                        <span className="font-black tracking-tighter uppercase text-slate-900 dark:text-white">Swastik</span>
-                    </div>
+                {/* Mobile Top Header - Clean Logout only */}
+                <header className="lg:hidden h-14 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-end px-4 sticky top-0 z-50">
                     <Button
                         variant="ghost"
                         size="sm"
                         onClick={handleLogout}
-                        className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 flex items-center gap-2 font-bold"
+                        className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 flex items-center gap-2 font-bold h-9"
                     >
                         <LogOut className="h-4 w-4" />
-                        <span className="text-xs uppercase tracking-tighter">Logout</span>
+                        <span className="text-[10px] uppercase tracking-tighter">Logout</span>
                     </Button>
                 </header>
 
