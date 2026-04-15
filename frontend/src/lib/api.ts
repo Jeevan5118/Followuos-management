@@ -50,6 +50,13 @@ const handleError = (error: any) => {
         coldStartTimer = null;
         apiEvents.onColdStart(false);
     }
+
+    // Handle session expiration (401 Unauthorized)
+    if (error.response && error.response.status === 401) {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+    }
+
     return Promise.reject(error);
 };
 

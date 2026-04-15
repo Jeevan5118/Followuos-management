@@ -74,7 +74,7 @@ export default function Analytics() {
                     {stats.map((stat, i) => (
                         <motion.div key={i} variants={item}>
                             <Card className="border-none shadow-xl bg-white dark:bg-slate-900 overflow-hidden hover:scale-[1.02] transition-transform duration-300">
-                                <CardContent className="p-8 flex flex-col items-start gap-4">
+                                <CardContent className="p-5 md:p-8 flex flex-col items-start gap-4">
                                     <div className={cn("p-4 rounded-2xl shadow-sm", stat.bg)}>
                                         <stat.icon className={cn("h-8 w-8", stat.color)} />
                                     </div>

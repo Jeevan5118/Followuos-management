@@ -161,7 +161,7 @@ export default function FollowUps() {
                     !showContactList && "hidden md:flex",
                     showContactList ? "relative h-full" : "h-0 md:h-full"
                 )}>
-                    <div className="p-5 md:p-6 pt-12 md:pt-6 border-b bg-white/50 dark:bg-slate-900/50">
+                    <div className="p-4 md:p-6 border-b bg-white/50 dark:bg-slate-900/50">
                         <h2 className="font-black text-xl md:text-2xl tracking-tight mb-4 text-slate-900 dark:text-white uppercase">Outreach Log</h2>
                         <div className="relative">
                             <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
@@ -240,7 +240,7 @@ export default function FollowUps() {
                     ) : (
                         <>
                             {/* Panel Header */}
-                            <div className="p-4 md:p-6 pt-12 md:pt-6 border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl sticky top-0 z-10">
+                            <div className="p-4 md:p-6 border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl sticky top-0 z-10">
                                 <div className="flex items-center gap-3 mb-4 md:hidden">
                                     <Button variant="ghost" size="icon" onClick={() => setShowContactList(true)} className="rounded-full bg-slate-100 dark:bg-slate-800">
                                         <ArrowLeft className="h-6 w-6" />

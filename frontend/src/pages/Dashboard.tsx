@@ -39,7 +39,7 @@ export default function Dashboard() {
 
     return (
         <Layout>
-            <div className="space-y-6 md:space-y-10">
+            <div className="max-w-6xl mx-auto space-y-4 md:space-y-8">
                 {/* Welcome Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
