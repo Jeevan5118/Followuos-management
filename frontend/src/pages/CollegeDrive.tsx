@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { useCity } from '@/contexts/CityContext';
 
 interface Coordinator {
     id: string;
@@ -34,6 +35,7 @@ interface CollegeDrive {
 
 export default function CollegeDrive() {
     const navigate = useNavigate();
+    const { activeCityId } = useCity();
     const [colleges, setColleges] = useState<College[]>([]);
     const [drives, setDrives] = useState<CollegeDrive[]>([]);
     const [loading, setLoading] = useState(true);
@@ -45,14 +47,14 @@ export default function CollegeDrive() {
     const [description, setDescription] = useState('');
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        if (activeCityId) fetchData();
+    }, [activeCityId]);
 
     const fetchData = async () => {
         try {
             const [collegesRes, drivesRes] = await Promise.all([
-                api.get('/colleges'),
-                api.get('/drives'),
+                api.get(`/colleges?cityId=${activeCityId}`),
+                api.get(`/drives?cityId=${activeCityId}`),
             ]);
             setColleges(collegesRes.data || []);
             setDrives(drivesRes.data || []);
@@ -72,6 +74,7 @@ export default function CollegeDrive() {
             const dateTime = new Date(`${driveDate}T${driveTime}`).toISOString();
             await api.post('/drives', {
                 collegeId: selectedCollegeId,
+                cityId: activeCityId,
                 date: dateTime,
                 description,
             });
@@ -89,7 +92,7 @@ export default function CollegeDrive() {
 
     const handleDelete = async (id: string) => {
         try {
-            await api.delete(`/drives/${id}`);
+            await api.delete(`/drives/${id}?cityId=${activeCityId}`);
             setDrives(drives.filter(d => d.id !== id));
         } catch (err) {
             console.error('Error deleting drive:', err);

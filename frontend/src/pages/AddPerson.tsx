@@ -7,20 +7,23 @@ import { Label } from '@/components/ui/label';
 import { UserPlus, User, Search, Users, Trash2 } from 'lucide-react';
 import api from '@/lib/api';
 import { motion } from 'framer-motion';
+import { useCity } from '@/contexts/CityContext';
 
 export default function AddPerson() {
+    const { activeCityId } = useCity();
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
     const [persons, setPersons] = useState<any[]>([]);
     const [fetching, setFetching] = useState(true);
 
     useEffect(() => {
-        fetchPersons();
-    }, []);
+        if (activeCityId) fetchPersons();
+    }, [activeCityId]);
 
     const fetchPersons = async () => {
+        setFetching(true);
         try {
-            const res = await api.get('/members');
+            const res = await api.get(`/members?cityId=${activeCityId}`);
             setPersons(res.data || []);
         } catch (error) {
             console.error(error);
@@ -33,7 +36,7 @@ export default function AddPerson() {
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await api.post('/members', { name });
+            const res = await api.post('/members', { name, cityId: activeCityId });
             setPersons([res.data, ...persons]);
             setName('');
         } catch (error) {

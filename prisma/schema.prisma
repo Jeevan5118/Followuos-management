@@ -7,12 +7,25 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(uuid())
-  email     String     @unique
-  password  String
-  name      String?
-  role      String     @default("USER")
-  followUps FollowUp[]
+  id                     String     @id @default(uuid())
+  email                  String     @unique
+  password               String
+  name                   String?
+  role                   String     @default("USER")
+  hasCompletedOnboarding Boolean    @default(false)
+  followUps              FollowUp[]
+}
+
+model City {
+  id            String          @id @default(uuid())
+  name          String          @unique
+  createdAt     DateTime        @default(now())
+  colleges      College[]
+  members       Member[]
+  coordinators  Coordinator[]
+  followUps     FollowUp[]
+  reminders     Reminder[]
+  collegeDrives CollegeDrive[]
 }
 
 model College {
@@ -20,6 +33,8 @@ model College {
   name         String
   category     String
   createdAt    DateTime        @default(now())
+  cityId       String
+  city         City            @relation(fields: [cityId], references: [id], onDelete: Cascade)
   members      CollegeMember[]
   coordinators Coordinator[]
   followUps    FollowUp[]
@@ -31,6 +46,8 @@ model Member {
   id       String          @id @default(uuid())
   name     String
   email    String?
+  cityId   String
+  city     City            @relation(fields: [cityId], references: [id], onDelete: Cascade)
   colleges CollegeMember[]
 }
 
@@ -49,6 +66,8 @@ model Coordinator {
   phoneNumber String
   collegeId   String
   college     College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  cityId      String
+  city        City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
 }
 
 model FollowUp {
@@ -62,6 +81,8 @@ model FollowUp {
   createdBy        User      @relation(fields: [createdById], references: [id])
   collegeId        String
   college          College   @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  cityId           String
+  city             City      @relation(fields: [cityId], references: [id], onDelete: Cascade)
 }
 
 model Reminder {
@@ -72,6 +93,8 @@ model Reminder {
   createdAt        DateTime  @default(now())
   collegeId        String
   college          College   @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  cityId           String
+  city             City      @relation(fields: [cityId], references: [id], onDelete: Cascade)
 }
 
 model CollegeDrive {
@@ -81,4 +104,6 @@ model CollegeDrive {
   createdAt   DateTime @default(now())
   collegeId   String
   college     College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  cityId      String
+  city        City     @relation(fields: [cityId], references: [id], onDelete: Cascade)
 }

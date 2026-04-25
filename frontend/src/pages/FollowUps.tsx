@@ -7,6 +7,7 @@ import { Search, Send, Clock, CheckCircle2, Phone, XCircle, Inbox, Trash2, Arrow
 import { motion } from 'framer-motion';
 import api from '@/lib/api';
 import { cn } from '@/lib/utils';
+import { useCity } from '@/contexts/CityContext';
 
 const getStatusColor = (status: string) => {
     switch (status) {
@@ -31,6 +32,7 @@ const getStatusIcon = (status: string) => {
 
 export default function FollowUps() {
     const location = useLocation();
+    const { activeCityId } = useCity();
     const [colleges, setColleges] = useState<any[]>([]);
     const [activeCollege, setActiveCollege] = useState<any | null>(null);
     const [search, setSearch] = useState('');
@@ -47,10 +49,13 @@ export default function FollowUps() {
     const chatBottomRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if (!activeCityId) return;
+        setActiveCollege(null);
+        setTimeline([]);
         const fetchColleges = async () => {
             try {
-                const colRes = await api.get('/colleges').catch(() => ({ data: [] }));
-                const memRes = await api.get('/members').catch(() => ({ data: [] }));
+                const colRes = await api.get(`/colleges?cityId=${activeCityId}`).catch(() => ({ data: [] }));
+                const memRes = await api.get(`/members?cityId=${activeCityId}`).catch(() => ({ data: [] }));
                 const cols: any[] = colRes.data || [];
                 const mems: any[] = memRes.data || [];
                 setColleges(cols);
@@ -62,7 +67,7 @@ export default function FollowUps() {
                     const found = cols.find((c: any) => c.id === lastId);
                     if (found) {
                         setActiveCollege(found);
-                        setShowContactList(false); // Hide list on mobile if college is pre-selected
+                        setShowContactList(false);
                     }
                 }
             } catch (error) {
@@ -72,7 +77,7 @@ export default function FollowUps() {
             }
         };
         fetchColleges();
-    }, []);
+    }, [activeCityId]);
 
     useEffect(() => {
         if (!activeCollege) return;
@@ -88,7 +93,7 @@ export default function FollowUps() {
     const fetchTimeline = async (id: string) => {
         setTimelineLoading(true);
         try {
-            const res = await api.get(`/followups/college/${id}`);
+            const res = await api.get(`/followups/college/${id}?cityId=${activeCityId}`);
             setTimeline(Array.isArray(res.data) ? res.data : []);
         } catch (error) {
             console.error('Failed to fetch timeline:', error);
@@ -114,6 +119,7 @@ export default function FollowUps() {
         try {
             const res = await api.post('/followups', {
                 collegeId: activeCollege.id,
+                cityId: activeCityId,
                 status: followupStatus || 'No Status Change',
                 description: followupDesc.trim(),
                 contactName: contactName.trim() || null,
@@ -135,7 +141,7 @@ export default function FollowUps() {
         if (!window.confirm(`Delete "${activeCollege.name}" permanently?`)) return;
 
         try {
-            await api.delete(`/colleges/${activeCollege.id}`);
+            await api.delete(`/colleges/${activeCollege.id}?cityId=${activeCityId}`);
             setColleges(prev => prev.filter(c => c.id !== activeCollege.id));
             setActiveCollege(null);
             setShowContactList(true);

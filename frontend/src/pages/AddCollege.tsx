@@ -7,8 +7,10 @@ import { Label } from '@/components/ui/label';
 import { Building2, Plus, X, GraduationCap, Tag, UserCheck, Trash2 } from 'lucide-react';
 import api from '@/lib/api';
 import { cn } from '@/lib/utils';
+import { useCity } from '@/contexts/CityContext';
 
 export default function AddCollege() {
+    const { activeCityId } = useCity();
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState('');
     const [category, setCategory] = useState('Workshop');
@@ -21,15 +23,15 @@ export default function AddCollege() {
     const [loadingData, setLoadingData] = useState(true);
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        if (activeCityId) fetchData();
+    }, [activeCityId]);
 
     const fetchData = async () => {
         setLoadingData(true);
         try {
             const [membersRes, collegesRes] = await Promise.all([
-                api.get('/members').catch(() => ({ data: [] })),
-                api.get('/colleges').catch(() => ({ data: [] })),
+                api.get(`/members?cityId=${activeCityId}`).catch(() => ({ data: [] })),
+                api.get(`/colleges?cityId=${activeCityId}`).catch(() => ({ data: [] })),
             ]);
             setPersons(Array.isArray(membersRes.data) ? membersRes.data : []);
             setColleges(Array.isArray(collegesRes.data) ? collegesRes.data : []);
@@ -62,6 +64,7 @@ export default function AddCollege() {
             await api.post('/colleges', {
                 name,
                 category,
+                cityId: activeCityId,
                 memberIds: selectedMemberIds,
                 coordinators: coordinators.filter(c => c.name && c.phoneNumber),
             });
@@ -81,7 +84,7 @@ export default function AddCollege() {
     const handleDeleteCollege = async (id: string) => {
         if (!window.confirm('Delete this college?')) return;
         try {
-            await api.delete(`/colleges/${id}`);
+            await api.delete(`/colleges/${id}?cityId=${activeCityId}`);
             setColleges(prev => prev.filter(c => c.id !== id));
         } catch (error) {
             console.error(error);

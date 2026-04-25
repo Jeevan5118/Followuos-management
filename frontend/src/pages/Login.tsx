@@ -8,8 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Building2, ShieldCheck, Lock, Mail, Eye, EyeOff, ArrowLeft, KeyRound } from 'lucide-react';
 
 export default function Login() {
-    const [email, setEmail] = useState('admin@crm.com');
-    const [password, setPassword] = useState('password');
+    const [email, setEmail] = useState('admin@followtracker.com');
+    const [password, setPassword] = useState('FollowCrm@123');
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
@@ -27,7 +27,12 @@ export default function Login() {
         try {
             const res = await api.post('/auth/login', { email, password });
             localStorage.setItem('token', res.data.token);
-            window.location.href = '/';
+            localStorage.setItem('user', JSON.stringify(res.data.user));
+            if (!res.data.user.hasCompletedOnboarding) {
+                window.location.href = '/onboarding';
+            } else {
+                window.location.href = '/';
+            }
         } catch (error) {
             console.error(error);
             alert("Authentication failed. Please check your credentials.");
@@ -81,8 +86,8 @@ export default function Login() {
                     <div className="h-20 w-20 bg-primary rounded-[2rem] flex items-center justify-center text-white shadow-2xl shadow-primary/40 mb-6 rotate-6 hover:rotate-0 transition-transform duration-500">
                         <Building2 className="h-10 w-10" />
                     </div>
-                    <h1 className="text-4xl font-black tracking-tighter text-slate-900 dark:text-white uppercase">CRM Pro</h1>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">Enterprise Outreach Engine</p>
+                    <h1 className="text-4xl font-black tracking-tighter text-slate-900 dark:text-white uppercase">FollowTracker</h1>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2">City-Based CRM Platform</p>
                 </div>
 
                 <Card className="border-none shadow-2xl shadow-slate-200/50 dark:shadow-none bg-white/80 dark:bg-slate-900/80 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden">
@@ -101,7 +106,7 @@ export default function Login() {
                                             <Input
                                                 id="email"
                                                 type="email"
-                                                placeholder="admin@crm.com"
+                                                placeholder="admin@followtracker.com"
                                                 required
                                                 value={email}
                                                 onChange={e => setEmail(e.target.value)}
@@ -172,7 +177,7 @@ export default function Login() {
                                             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-primary transition-colors" />
                                             <Input
                                                 type="email"
-                                                placeholder="admin@crm.com"
+                                                placeholder="admin@followtracker.com"
                                                 required
                                                 value={resetEmail}
                                                 onChange={e => setResetEmail(e.target.value)}
@@ -246,7 +251,7 @@ export default function Login() {
                 </Card>
 
                 <div className="text-center mt-8">
-                    <p className="text-[11px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.2em]">© 2026 OUTREACH CRM • ALL SYSTEMS OPERATIONAL</p>
+                    <p className="text-[11px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.2em]">© 2026 FOLLOWTRACKER CRM • ALL SYSTEMS OPERATIONAL</p>
                 </div>
             </motion.div>
         </div>

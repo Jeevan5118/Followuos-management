@@ -10,15 +10,19 @@ export const login = async (req: Request, res: Response) => {
         if (email) email = email.trim().toLowerCase();
 
         // Let's implement a hardcoded seeder/admin if not exists for quick testing
+        const adminEmail = (process.env.ADMIN_EMAIL || 'admin@followtracker.com').toLowerCase();
+        const adminPassword = process.env.ADMIN_PASSWORD || 'FollowCrm@123';
+
         let user = await prisma.user.findUnique({ where: { email } });
-        if (!user && email === 'admin@crm.com' && password === 'password') {
+        if (!user && email === adminEmail && password === adminPassword) {
             const hashedPassword = await bcrypt.hash(password, 10);
             user = await prisma.user.create({
                 data: {
                     email,
                     password: hashedPassword,
-                    name: 'Admin User',
-                    role: 'ADMIN'
+                    name: 'Super Admin',
+                    role: 'ADMIN',
+                    hasCompletedOnboarding: false
                 }
             });
         }
@@ -33,14 +37,14 @@ export const login = async (req: Request, res: Response) => {
         }
 
         const token = jwt.sign(
-            { id: user.id, role: user.role, name: user.name },
+            { id: user.id, role: user.role, name: user.name, hasCompletedOnboarding: user.hasCompletedOnboarding },
             process.env.JWT_SECRET || 'secret',
             { expiresIn: '1d' }
         );
 
         res.json({
             token,
-            user: { id: user.id, email: user.email, name: user.name, role: user.role }
+            user: { id: user.id, email: user.email, name: user.name, role: user.role, hasCompletedOnboarding: user.hasCompletedOnboarding }
         });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
@@ -79,5 +83,35 @@ export const resetPassword = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.error('Password reset error:', error);
         res.status(500).json({ message: 'Server error: ' + error.message });
+    }
+};
+
+export const completeOnboarding = async (req: Request, res: Response) => {
+    try {
+        // @ts-ignore
+        const userId = req.user.id;
+        const { cities } = req.body;
+
+        if (Array.isArray(cities) && cities.length > 0) {
+            for (const cityName of cities) {
+                const name = typeof cityName === 'string' ? cityName.trim() : '';
+                if (name) {
+                    await prisma.city.upsert({
+                        where: { name },
+                        update: {},
+                        create: { name }
+                    });
+                }
+            }
+        }
+
+        await prisma.user.update({
+            where: { id: userId },
+            data: { hasCompletedOnboarding: true }
+        });
+
+        res.json({ message: 'Onboarding completed successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
     }
 };
