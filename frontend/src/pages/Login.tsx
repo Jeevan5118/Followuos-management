@@ -8,8 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Building2, ShieldCheck, Lock, Mail, Eye, EyeOff, ArrowLeft, KeyRound } from 'lucide-react';
 
 export default function Login() {
-    const [email, setEmail] = useState('admin@followtracker.com');
-    const [password, setPassword] = useState('FollowCrm@123');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
