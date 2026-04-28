@@ -33,8 +33,8 @@ export default function Reminders() {
                 api.get(`/colleges?cityId=${activeCityId}`).catch(() => ({ data: [] })),
                 api.get(`/reminders?cityId=${activeCityId}`).catch(() => ({ data: [] }))
             ]);
-            setColleges(Array.isArray(colRes.data) ? colRes.data : []);
-            setReminders(Array.isArray(remRes.data) ? remRes.data : []);
+            setColleges(Array.isArray(colRes.data) ? (colRes.data as any[]) : []);
+            setReminders(Array.isArray(remRes.data) ? (remRes.data as any[]) : []);
         } catch (error) {
             console.error('Reminders data fetch error:', error);
         } finally {
@@ -55,7 +55,7 @@ export default function Reminders() {
                 description: description.trim() || null,
                 dueDate,
             });
-            setReminders(prev => [...prev, res.data]);
+            setReminders(prev => [...prev, (res.data as any)]);
             setCollegeId('');
             setTitle('');
             setDescription('');

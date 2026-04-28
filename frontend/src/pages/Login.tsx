@@ -26,9 +26,10 @@ export default function Login() {
         setLoading(true);
         try {
             const res = await api.post('/auth/login', { email, password });
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('user', JSON.stringify(res.data.user));
-            if (!res.data.user.hasCompletedOnboarding) {
+            const data = res.data as any;
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            if (!data.user.hasCompletedOnboarding) {
                 window.location.href = '/onboarding';
             } else {
                 window.location.href = '/';

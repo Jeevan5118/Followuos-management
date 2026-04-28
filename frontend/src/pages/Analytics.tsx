@@ -22,8 +22,8 @@ export default function Analytics() {
                     api.get(`/followups?cityId=${activeCityId}`).catch(() => ({ data: [] }))
                 ]);
 
-                setColleges(colReq.data || []);
-                setFollowups(folReq.data || []);
+                setColleges((colReq.data as any[]) || []);
+                setFollowups((folReq.data as any[]) || []);
             } catch (error) {
                 console.error("Analytics Fetch Error:", error);
             } finally {

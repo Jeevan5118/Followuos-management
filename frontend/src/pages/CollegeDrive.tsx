@@ -56,8 +56,8 @@ export default function CollegeDrive() {
                 api.get(`/colleges?cityId=${activeCityId}`),
                 api.get(`/drives?cityId=${activeCityId}`),
             ]);
-            setColleges(collegesRes.data || []);
-            setDrives(drivesRes.data || []);
+            setColleges((collegesRes.data as College[]) || []);
+            setDrives((drivesRes.data as CollegeDrive[]) || []);
         } catch (err) {
             console.error('Error fetching data:', err);
         } finally {

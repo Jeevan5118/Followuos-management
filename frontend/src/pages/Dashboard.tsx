@@ -25,9 +25,9 @@ export default function Dashboard() {
                     api.get(`/drives?cityId=${activeCityId}&limit=5`).catch(() => ({ data: [] }))
                 ]);
 
-                setFollowups(folReq.data || []);
-                setReminders(remReq.data || []);
-                setDrives(drvReq.data || []);
+                setFollowups((folReq.data as any[]) || []);
+                setReminders((remReq.data as any[]) || []);
+                setDrives((drvReq.data as any[]) || []);
             } catch (error) {
                 console.error("Dashboard Fetch Error Detailed:", error);
             }

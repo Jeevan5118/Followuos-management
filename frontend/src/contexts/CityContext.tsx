@@ -24,7 +24,7 @@ export const CityProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const fetchCities = async () => {
         try {
             const res = await api.get('/cities');
-            const fetchedCities = res.data;
+            const fetchedCities = res.data as City[];
             setCities(fetchedCities);
 
             if (fetchedCities.length > 0 && !activeCityId) {
@@ -45,6 +45,9 @@ export const CityProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
+            if (api.defaults.headers) {
+                (api.defaults.headers as any).Authorization = `Bearer ${token}`;
+            }
             fetchCities();
         } else {
             setIsLoading(false);

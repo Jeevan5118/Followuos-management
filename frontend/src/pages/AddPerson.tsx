@@ -23,8 +23,8 @@ export default function AddPerson() {
     const fetchPersons = async () => {
         setFetching(true);
         try {
-            const res = await api.get(`/members?cityId=${activeCityId}`);
-            setPersons(res.data || []);
+            const data = res.data as any[];
+            setPersons(data || []);
         } catch (error) {
             console.error(error);
         } finally {

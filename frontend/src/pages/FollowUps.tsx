@@ -58,10 +58,8 @@ export default function FollowUps() {
                     api.get(`/colleges?cityId=${activeCityId}`).catch(() => ({ data: [] })),
                     api.get(`/members?cityId=${activeCityId}`).catch(() => ({ data: [] }))
                 ]);
-                const cols: any[] = colRes.data || [];
-                const mems: any[] = memRes.data || [];
-                setColleges(cols);
-                setGlobalPersons(mems);
+                setColleges((colRes.data as any[]) || []);
+                setGlobalPersons((memRes.data as any[]) || []);
 
                 const stateCollegeId = location.state?.collegeId;
                 const lastId = stateCollegeId || localStorage.getItem('lastViewedCollegeId');
@@ -96,7 +94,7 @@ export default function FollowUps() {
         setTimelineLoading(true);
         try {
             const res = await api.get(`/followups/college/${id}?cityId=${activeCityId}`);
-            setTimeline(Array.isArray(res.data) ? res.data : []);
+            setTimeline(Array.isArray(res.data) ? (res.data as any[]) : []);
         } catch (error) {
             console.error('Failed to fetch timeline:', error);
             setTimeline([]);
@@ -126,7 +124,7 @@ export default function FollowUps() {
                 description: followupDesc.trim(),
                 contactName: contactName.trim() || null,
             });
-            setTimeline(prev => [...prev, res.data]);
+            setTimeline(prev => [...prev, (res.data as any)]);
             setFollowupDesc('');
             setFollowupStatus('');
             setContactName('');
