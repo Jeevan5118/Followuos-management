@@ -8,8 +8,10 @@ import { Calendar, Trash2, BellRing, Clock, AlertCircle, CalendarDays } from 'lu
 import api from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { useCity } from '@/contexts/CityContext';
 
 export default function Reminders() {
+    const { activeCityId } = useCity();
     const [colleges, setColleges] = useState<any[]>([]);
     const [reminders, setReminders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -21,15 +23,15 @@ export default function Reminders() {
     const [dueDate, setDueDate] = useState('');
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        if (activeCityId) fetchData();
+    }, [activeCityId]);
 
     const fetchData = async () => {
         setLoading(true);
         try {
             const [colRes, remRes] = await Promise.all([
-                api.get('/colleges').catch(() => ({ data: [] })),
-                api.get('/reminders').catch(() => ({ data: [] }))
+                api.get(`/colleges?cityId=${activeCityId}`).catch(() => ({ data: [] })),
+                api.get(`/reminders?cityId=${activeCityId}`).catch(() => ({ data: [] }))
             ]);
             setColleges(Array.isArray(colRes.data) ? colRes.data : []);
             setReminders(Array.isArray(remRes.data) ? remRes.data : []);
@@ -48,6 +50,7 @@ export default function Reminders() {
         try {
             const res = await api.post('/reminders', {
                 collegeId,
+                cityId: activeCityId,
                 title: title.trim(),
                 description: description.trim() || null,
                 dueDate,
@@ -68,7 +71,7 @@ export default function Reminders() {
     const handleDelete = async (id: string) => {
         if (!window.confirm('Delete this reminder?')) return;
         try {
-            await api.delete(`/reminders/${id}`);
+            await api.delete(`/reminders/${id}?cityId=${activeCityId}`);
             setReminders(prev => prev.filter(r => r.id !== id));
         } catch (error) {
             console.error(error);

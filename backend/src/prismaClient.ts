@@ -1,21 +1,17 @@
 import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { PrismaNeon } from '@prisma/adapter-neon';
+import { neonConfig } from '@neondatabase/serverless';
+import ws from 'ws';
 import path from 'path';
 import dotenv from 'dotenv';
 
-// The DATABASE_URL is still used by Prisma internal engine during migrations
+// Use path.resolve to find .env correctly on localhost
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
-// Explicitly provide credentials to bypass PG parser issues with the URL
-const pool = new Pool({ 
-    user: 'neondb_owner',
-    host: 'ep-soft-credit-ae6spt0b-pooler.c-2.us-east-2.aws.neon.tech',
-    database: 'neondb',
-    password: 'npg_46UsWESdaLkg',
-    port: 5432,
-    ssl: { rejectUnauthorized: false }
-});
-const adapter = new PrismaPg(pool);
+// Use WebSocket for Node.js (not edge runtime)
+neonConfig.webSocketConstructor = ws;
+
+const connectionString = process.env.DATABASE_URL!;
+const adapter = new PrismaNeon({ connectionString });
 
 export const prisma = new PrismaClient({ adapter });

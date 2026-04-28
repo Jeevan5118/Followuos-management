@@ -6,19 +6,23 @@ import { ListChecks, ArrowRight, Calendar, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import api from '@/lib/api';
 import { cn } from '@/lib/utils';
+import { useCity } from '@/contexts/CityContext';
 
 export default function Dashboard() {
     const navigate = useNavigate();
+    const { activeCityId } = useCity();
     const [followups, setFollowups] = useState<any[]>([]);
     const [reminders, setReminders] = useState<any[]>([]);
     const [drives, setDrives] = useState<any[]>([]);
+
     useEffect(() => {
+        if (!activeCityId) return;
         const fetchData = async () => {
             try {
                 const [folReq, remReq, drvReq] = await Promise.all([
-                    api.get('/followups?limit=5').catch(() => ({ data: [] })),
-                    api.get('/reminders?limit=5').catch(() => ({ data: [] })),
-                    api.get('/drives?limit=5').catch(() => ({ data: [] }))
+                    api.get(`/followups?cityId=${activeCityId}&limit=5`).catch(() => ({ data: [] })),
+                    api.get(`/reminders?cityId=${activeCityId}&limit=5`).catch(() => ({ data: [] })),
+                    api.get(`/drives?cityId=${activeCityId}&limit=5`).catch(() => ({ data: [] }))
                 ]);
 
                 setFollowups(folReq.data || []);
@@ -29,7 +33,7 @@ export default function Dashboard() {
             }
         };
         fetchData();
-    }, []);
+    }, [activeCityId]);
 
     const recentFollowUps = followups.slice(0, 4);
     const activeReminders = reminders

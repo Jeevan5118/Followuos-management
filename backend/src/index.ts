@@ -8,6 +8,7 @@ import followUpRoutes from './routes/followupRoute';
 import memberRoutes from './routes/memberRoute';
 import reminderRoutes from './routes/reminderRoute';
 import driveRoutes from './routes/driveRoute';
+import cityRoutes from './routes/cityRoute';
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
@@ -26,6 +27,7 @@ app.use('/api/followups', followUpRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/reminders', reminderRoutes);
 app.use('/api/drives', driveRoutes);
+app.use('/api/cities', cityRoutes);
 
 app.use((err: any, req: any, res: any, next: any) => {
     console.error('GLOBAL ERROR:', err);

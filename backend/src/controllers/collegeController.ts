@@ -3,8 +3,13 @@ import { prisma } from '../prismaClient';
 
 export const getColleges = async (req: Request, res: Response) => {
     try {
+        const cityId = req.query.cityId as string;
+        if (!cityId) return res.status(400).json({ message: 'cityId is required' });
+        
         const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
+        
         const colleges = await prisma.college.findMany({
+            where: { cityId },
             take: limit,
             include: {
                 coordinators: true,
@@ -27,8 +32,11 @@ export const getColleges = async (req: Request, res: Response) => {
 export const getCollegeById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id as string;
-        const college = await prisma.college.findUnique({
-            where: { id },
+        const cityId = req.query.cityId as string;
+        if (!cityId) return res.status(400).json({ message: 'cityId is required' });
+
+        const college = await prisma.college.findFirst({
+            where: { id, cityId },
             include: {
                 coordinators: true,
                 members: {
@@ -48,16 +56,19 @@ export const getCollegeById = async (req: Request, res: Response) => {
 
 export const createCollege = async (req: Request, res: Response) => {
     try {
-        const { name, category, memberIds, coordinators } = req.body;
+        const { name, category, memberIds, coordinators, cityId } = req.body;
+        if (!cityId) return res.status(400).json({ message: 'cityId is required' });
 
         const college = await prisma.college.create({
             data: {
                 name,
                 category,
+                cityId,
                 coordinators: {
                     create: coordinators.map((c: any) => ({
                         name: c.name,
-                        phoneNumber: c.phoneNumber
+                        phoneNumber: c.phoneNumber,
+                        cityId
                     }))
                 }
             }
@@ -83,8 +94,11 @@ export const createCollege = async (req: Request, res: Response) => {
 export const deleteCollege = async (req: Request, res: Response) => {
     try {
         const id = req.params.id as string;
-        await prisma.college.delete({
-            where: { id }
+        const cityId = req.query.cityId as string;
+        if (!cityId) return res.status(400).json({ message: 'cityId is required' });
+
+        await prisma.college.deleteMany({
+            where: { id, cityId }
         });
         res.status(200).json({ message: 'Deleted successfully' });
     } catch (error) {

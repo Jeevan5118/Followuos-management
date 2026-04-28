@@ -5,18 +5,21 @@ import { Users, AlertTriangle, CheckCircle2, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import api from '@/lib/api';
 import { cn } from '@/lib/utils';
+import { useCity } from '@/contexts/CityContext';
 
 export default function Analytics() {
+    const { activeCityId } = useCity();
     const [colleges, setColleges] = useState<any[]>([]);
     const [followups, setFollowups] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!activeCityId) return;
         const fetchData = async () => {
             try {
                 const [colReq, folReq] = await Promise.all([
-                    api.get('/colleges').catch(() => ({ data: [] })),
-                    api.get('/followups').catch(() => ({ data: [] }))
+                    api.get(`/colleges?cityId=${activeCityId}`).catch(() => ({ data: [] })),
+                    api.get(`/followups?cityId=${activeCityId}`).catch(() => ({ data: [] }))
                 ]);
 
                 setColleges(colReq.data || []);
@@ -28,7 +31,7 @@ export default function Analytics() {
             }
         };
         fetchData();
-    }, []);
+    }, [activeCityId]);
 
     const pending = followups.filter(f => f.status === 'Pending' || f.status === 'In Progress').length;
     const interested = followups.filter(f => f.status === 'Interested').length;

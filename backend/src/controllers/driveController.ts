@@ -4,16 +4,17 @@ import { prisma } from '../prismaClient';
 
 export const createDrive = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { collegeId, date, description } = req.body;
+        const { collegeId, date, description, cityId } = req.body;
 
-        if (!collegeId || !date) {
-            res.status(400).json({ error: 'collegeId and date are required' });
+        if (!collegeId || !date || !cityId) {
+            res.status(400).json({ error: 'collegeId, date, and cityId are required' });
             return;
         }
 
         const newDrive = await prisma.collegeDrive.create({
             data: {
                 collegeId,
+                cityId,
                 date: new Date(date),
                 description,
             },
@@ -35,8 +36,16 @@ export const createDrive = async (req: Request, res: Response): Promise<void> =>
 
 export const getDrives = async (req: Request, res: Response): Promise<void> => {
     try {
+        const cityId = req.query.cityId as string;
+        if (!cityId) {
+            res.status(400).json({ error: 'cityId is required' });
+            return;
+        }
+
         const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
+
         const drives = await prisma.collegeDrive.findMany({
+            where: { cityId },
             take: limit,
             include: {
                 college: {
@@ -65,8 +74,14 @@ export const getDrives = async (req: Request, res: Response): Promise<void> => {
 export const deleteDrive = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        await prisma.collegeDrive.delete({
-            where: { id: id as string }
+        const cityId = req.query.cityId as string;
+        if (!cityId) {
+            res.status(400).json({ error: 'cityId is required' });
+            return;
+        }
+
+        await prisma.collegeDrive.deleteMany({
+            where: { id: id as string, cityId }
         });
 
         res.status(200).json({ message: 'Drive deleted successfully' });
