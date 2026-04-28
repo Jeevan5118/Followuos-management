@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Upload, Download, FileSpreadsheet, CheckCircle2, AlertCircle, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, FileSpreadsheet, CheckCircle2, AlertCircle, X, ChevronDown, ChevronUp } from 'lucide-react';
 import api from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { useCity } from '@/contexts/CityContext';
