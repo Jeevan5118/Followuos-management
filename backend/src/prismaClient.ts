@@ -11,7 +11,11 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 // Use WebSocket for Node.js (not edge runtime)
 neonConfig.webSocketConstructor = ws;
 
-const connectionString = process.env.DATABASE_URL!;
-const adapter = new PrismaNeon({ connectionString });
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+    console.error('[PRISMA] FATAL: DATABASE_URL is not set in environment variables!');
+}
+
+const adapter = new PrismaNeon({ connectionString: connectionString! });
 
 export const prisma = new PrismaClient({ adapter });

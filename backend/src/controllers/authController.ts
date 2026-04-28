@@ -47,7 +47,8 @@ export const login = async (req: Request, res: Response) => {
             user: { id: user.id, email: user.email, name: user.name, role: user.role, hasCompletedOnboarding: user.hasCompletedOnboarding }
         });
     } catch (error: any) {
-        res.status(500).json({ message: 'Server error' });
+        console.error('[LOGIN ERROR]', error?.message || error);
+        res.status(500).json({ message: 'Server error', detail: error?.message });
     }
 };
 
@@ -111,7 +112,8 @@ export const completeOnboarding = async (req: Request, res: Response) => {
         });
 
         res.json({ message: 'Onboarding completed successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+    } catch (error: any) {
+        console.error('[ONBOARDING ERROR]', error?.message || error);
+        res.status(500).json({ message: 'Server error', detail: error?.message });
     }
 };
