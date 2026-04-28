@@ -58,8 +58,10 @@ export default function FollowUps() {
                     api.get(`/colleges?cityId=${activeCityId}`).catch(() => ({ data: [] })),
                     api.get(`/members?cityId=${activeCityId}`).catch(() => ({ data: [] }))
                 ]);
-                setColleges((colRes.data as any[]) || []);
-                setGlobalPersons((memRes.data as any[]) || []);
+                const cols = (colRes.data as any[]) || [];
+                const mems = (memRes.data as any[]) || [];
+                setColleges(cols);
+                setGlobalPersons(mems);
 
                 const stateCollegeId = location.state?.collegeId;
                 const lastId = stateCollegeId || localStorage.getItem('lastViewedCollegeId');
