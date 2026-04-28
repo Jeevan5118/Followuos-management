@@ -3,9 +3,11 @@ import { prisma } from '../prismaClient';
 
 export const getReminders = async (req: Request, res: Response) => {
     try {
+        const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
         const reminders = await prisma.reminder.findMany({
             include: { college: true },
-            orderBy: { dueDate: 'asc' }
+            orderBy: { dueDate: 'asc' },
+            take: limit
         });
         res.json(reminders);
     } catch (error) {

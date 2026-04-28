@@ -35,7 +35,9 @@ export const createDrive = async (req: Request, res: Response): Promise<void> =>
 
 export const getDrives = async (req: Request, res: Response): Promise<void> => {
     try {
+        const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
         const drives = await prisma.collegeDrive.findMany({
+            take: limit,
             include: {
                 college: {
                     include: {

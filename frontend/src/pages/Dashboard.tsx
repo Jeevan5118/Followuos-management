@@ -15,9 +15,11 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const folReq = await api.get('/followups').catch(() => ({ data: [] }));
-                const remReq = await api.get('/reminders').catch(() => ({ data: [] }));
-                const drvReq = await api.get('/drives').catch(() => ({ data: [] }));
+                const [folReq, remReq, drvReq] = await Promise.all([
+                    api.get('/followups?limit=5').catch(() => ({ data: [] })),
+                    api.get('/reminders?limit=5').catch(() => ({ data: [] })),
+                    api.get('/drives?limit=5').catch(() => ({ data: [] }))
+                ]);
 
                 setFollowups(folReq.data || []);
                 setReminders(remReq.data || []);

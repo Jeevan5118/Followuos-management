@@ -3,9 +3,11 @@ import { prisma } from '../prismaClient';
 
 export const getFollowups = async (req: Request, res: Response) => {
     try {
+        const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
         const followups = await prisma.followUp.findMany({
             include: { college: true },
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: 'desc' },
+            take: limit
         });
         res.json(followups);
     } catch (error) {

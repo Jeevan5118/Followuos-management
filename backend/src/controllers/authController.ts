@@ -11,7 +11,7 @@ export const login = async (req: Request, res: Response) => {
 
         // Let's implement a hardcoded seeder/admin if not exists for quick testing
         let user = await prisma.user.findUnique({ where: { email } });
-        if (!user && email === 'admin@crm.com' && password === 'password') {
+        if (!user && email === 'admin@crm.com' && password === 'password123') {
             const hashedPassword = await bcrypt.hash(password, 10);
             user = await prisma.user.create({
                 data: {
@@ -42,7 +42,7 @@ export const login = async (req: Request, res: Response) => {
             token,
             user: { id: user.id, email: user.email, name: user.name, role: user.role }
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({ message: 'Server error' });
     }
 };

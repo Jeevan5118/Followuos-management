@@ -49,8 +49,10 @@ export default function FollowUps() {
     useEffect(() => {
         const fetchColleges = async () => {
             try {
-                const colRes = await api.get('/colleges').catch(() => ({ data: [] }));
-                const memRes = await api.get('/members').catch(() => ({ data: [] }));
+                const [colRes, memRes] = await Promise.all([
+                    api.get('/colleges').catch(() => ({ data: [] })),
+                    api.get('/members').catch(() => ({ data: [] }))
+                ]);
                 const cols: any[] = colRes.data || [];
                 const mems: any[] = memRes.data || [];
                 setColleges(cols);

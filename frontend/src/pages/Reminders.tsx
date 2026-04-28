@@ -27,8 +27,10 @@ export default function Reminders() {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const colRes = await api.get('/colleges').catch(() => ({ data: [] }));
-            const remRes = await api.get('/reminders').catch(() => ({ data: [] }));
+            const [colRes, remRes] = await Promise.all([
+                api.get('/colleges').catch(() => ({ data: [] })),
+                api.get('/reminders').catch(() => ({ data: [] }))
+            ]);
             setColleges(Array.isArray(colRes.data) ? colRes.data : []);
             setReminders(Array.isArray(remRes.data) ? remRes.data : []);
         } catch (error) {

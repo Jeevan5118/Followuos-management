@@ -2,17 +2,23 @@
     "name": "followups-management",
     "version": "1.0.0",
     "private": true,
+    "workspaces": [
+        "frontend",
+        "backend"
+    ],
     "scripts": {
         "dev:frontend": "cd frontend && npm run dev",
         "dev:backend": "nodemon backend/src/index.ts",
         "build": "cd frontend && npm install && npm run build",
-        "postinstall": "prisma generate --schema=./prisma/schema.prisma",
-        "prisma:generate": "prisma generate --schema=./prisma/schema.prisma"
+        "postinstall": "prisma generate --schema=backend/prisma/schema.prisma",
+        "prisma:generate": "prisma generate --schema=backend/prisma/schema.prisma"
     },
     "dependencies": {
         "@prisma/adapter-pg": "7.7.0",
         "@prisma/client": "7.7.0",
         "@prisma/config": "7.7.0",
+        "@types/axios": "^0.9.36",
+        "axios": "^1.15.2",
         "bcryptjs": "^3.0.3",
         "cors": "^2.8.6",
         "dotenv": "^17.4.0",

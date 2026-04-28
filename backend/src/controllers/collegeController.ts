@@ -3,7 +3,9 @@ import { prisma } from '../prismaClient';
 
 export const getColleges = async (req: Request, res: Response) => {
     try {
+        const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
         const colleges = await prisma.college.findMany({
+            take: limit,
             include: {
                 coordinators: true,
                 members: {

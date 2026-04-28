@@ -14,8 +14,10 @@ export default function Analytics() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const colReq = await api.get('/colleges').catch(() => ({ data: [] }));
-                const folReq = await api.get('/followups').catch(() => ({ data: [] }));
+                const [colReq, folReq] = await Promise.all([
+                    api.get('/colleges').catch(() => ({ data: [] })),
+                    api.get('/followups').catch(() => ({ data: [] }))
+                ]);
 
                 setColleges(colReq.data || []);
                 setFollowups(folReq.data || []);
