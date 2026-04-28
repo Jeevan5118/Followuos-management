@@ -1,15 +1,15 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ListChecks, Calendar, TrendingUp, Building2, UserPlus } from 'lucide-react';
+import { Home, ListChecks, Calendar, TrendingUp, Building2, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
 const navItems = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/analytics', label: 'Stats', icon: TrendingUp },
-    { href: '/add-college', label: 'College +', icon: Building2 },
-    { href: '/add-person', label: 'Person +', icon: UserPlus },
+    { href: '/add-college', label: 'College', icon: Building2 },
     { href: '/follow-ups', label: 'Log', icon: ListChecks },
     { href: '/college-drive', label: 'Drives', icon: Calendar },
+    { href: '/bulk-upload', label: 'Bulk', icon: Upload },
 ];
 
 export function MobileNav() {

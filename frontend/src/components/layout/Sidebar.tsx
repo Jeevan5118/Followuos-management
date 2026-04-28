@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ListChecks, LogOut, BellRing, UserPlus, Building2, Calendar, TrendingUp, Globe, ChevronDown, Check, Plus } from 'lucide-react';
+import { Home, ListChecks, LogOut, BellRing, UserPlus, Building2, Calendar, TrendingUp, Globe, ChevronDown, Check, Plus, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCity } from '@/contexts/CityContext';
@@ -14,6 +14,7 @@ const navItems = [
     { href: '/follow-ups', label: 'Follow-ups', icon: ListChecks },
     { href: '/college-drive', label: 'College Drive', icon: Calendar },
     { href: '/reminders', label: 'Reminders', icon: BellRing },
+    { href: '/bulk-upload', label: 'Bulk Upload', icon: Upload },
 ];
 
 export function Sidebar() {

@@ -9,6 +9,7 @@ import FollowUps from './pages/FollowUps';
 import Reminders from './pages/Reminders';
 import CollegeDrive from './pages/CollegeDrive';
 import Analytics from './pages/Analytics';
+import BulkUpload from './pages/BulkUpload';
 import NotFound from './pages/NotFound';
 import { ColdStartIndicator } from './components/ui/ColdStartIndicator';
 import { CityProvider } from './contexts/CityContext';
@@ -67,6 +68,7 @@ function App() {
                     <Route path="/reminders" element={requireAuth(<Reminders />)} />
                     <Route path="/college-drive" element={requireAuth(<CollegeDrive />)} />
                     <Route path="/analytics" element={requireAuth(<Analytics />)} />
+                    <Route path="/bulk-upload" element={requireAuth(<BulkUpload />)} />
 
                     {/* Fallbacks */}
                     <Route path="/admin" element={<Navigate to="/" replace />} />
